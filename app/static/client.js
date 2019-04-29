@@ -12,9 +12,26 @@ function showPicked(input) {
     reader.readAsDataURL(input.files[0]);
 }
 
+function urlPicker() {
+	
+	var url = el('image-url').value;
+	var res = url.split(".");
+	if  (res[res.length - 1].toLowerCase() == 'jpg' || res[res.length - 1].toLowerCase() == 'png') {
+		el('image-picked').src = el('image-url').value;
+		el('image-picked').className = '';
+		el('image-picked').height = '100';
+		el('image-picked').width = '100';
+		el('upload-label').innerHTML = '';
+	} else {
+		alert('Please select an image url')
+	}
+	
+}
+
 function analyze() {
     var uploadFiles = el('file-input').files;
-    if (uploadFiles.length != 1) alert('Please select 1 file to analyze!');
+	var urlUpload = el('image-url').value;
+    if (uploadFiles.length == 0 && urlUpload.length == 0) alert('Please select 1 file to analyze!');
 
     el('analyze-button').innerHTML = 'Analyzing...';
     var xhr = new XMLHttpRequest();
@@ -30,7 +47,15 @@ function analyze() {
     }
 
     var fileData = new FormData();
-    fileData.append('file', uploadFiles[0]);
+	if (uploadFiles.length == 1 && urlUpload.length == 0){
+		fileData.append('file', uploadFiles[0]);
+		fileData.append('type', 'file');
+	} else if (uploadFiles.length == 0 && urlUpload.length == 1){
+		fileData.append('file', urlUpload[0]);
+		fileData.append('type', 'url');
+	}
+	
+    ;
     xhr.send(fileData);
 }
 

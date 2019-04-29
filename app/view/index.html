@@ -5,37 +5,52 @@
     <script src='../static/client.js'></script>
 </head>
 <body>
-<div>
-    <div class='center'>
-        <div class='title'>Classify Bear Images 🐻</div>
-        <p>
-            Use images of <strong>teddy</strong> bears, <strong>black</strong> bears, <strong>grizzly</strong> bears, or
-            all three!
-        </p>
-        <div class='content'>
-            <div class='no-display'>
-                <input id='file-input'
-                       class='no-display'
-                       type='file'
-                       name='file'
-                       accept='image/*'
-                       onchange='showPicked(this)'>
-            </div>
-            <button class='choose-file-button' type='button' onclick='showPicker()'>Select Image</button>
-            <div class='upload-label'>
-                <label id='upload-label'>No file chosen</label>
-            </div>
-            <div>
-                <img id='image-picked' class='no-display' alt='Chosen Image' height='200'>
-            </div>
-            <div class='analyze'>
-                <button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button>
-            </div>
-            <div class='result-label'>
-                <label id='result-label'></label>
-            </div>
-        </div>
-    </div>
+<div class='title'>&#x1F3B7 Go from picture to Spotify Playlist! &#x1F3B8
 </div>
+<div class='blurb'>
+	<p><b>Got an image that you think would make a great album cover?<br>
+				Upload it and pic-to-playlist will make a genre prediction,<br>
+				and create a playlist of songs based on the image.</b>
+			</p>
+			<p>
+				Run out of inspiration? Have a look at <a href="https://www.reddit.com/r/fakealbumcovers" target='_blank'>r/fakealbumcovers</a> and upload
+				via the url.
+			</p>
+</div>
+<section>
+<div class='upload-choices'>
+	<form id='url-form'>
+		<button class='choose-file-button' type='button' onclick='urlPicker()'>Upload from URL</button><br>
+		<br><input type="url" id="image-url" name="url" pattern="https?://.+" placeholder="https://www.reddit.com/r/fakealbumcovers" size="38"><br>
+	</form>
+
+	<div class='content'>
+		<div class='no-display'>
+			<input id='file-input'
+				   class='no-display'
+				   type='file'
+				   name='file'
+				   accept='image/*'
+				   onchange='showPicked(this)'>
+		</div>
+		<button class='choose-file-button' type='button' onclick='showPicker()'>Select Image</button>
+		<div class='upload-label'>
+			<label id='upload-label'>No file chosen</label>
+		</div>
+		<div>
+			<img id='image-picked' class='no-display' alt='Chosen Image' height='100', width='100'>
+		</div>
+		<div class='analyze'>
+			<button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button>
+		</div>
+	</div>
+</div>
+<div class='result-label'>
+	<label id='result-label'>RESULT LABEL</label>
+</div>
+<div class='sp-widget'>
+	<iframe src="https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/7EpzM1aZziFxIjV8qwr2h6" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+</div>
+</section>
 </body>
 </html>

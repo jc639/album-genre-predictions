@@ -6,13 +6,44 @@ body {
     display: none;
 }
 
-.center {
+.upload-choices {
+    float: left;
+    padding-left: 50px;
+	padding-top: 50px;
+	width:30%;
+    font-size: 14px;
+}
+
+
+.blurb{
     margin: auto;
     padding: 10px;
-    padding-left:50px;
-    padding-right:50px;
+    padding-left:10px;
+    padding-right:10px;
     text-align: center;
     font-size: 14px;
+}
+
+.sp-widget {
+    float: left;
+	padding-left: 10px;
+    padding-top: 50px;
+	width:30%;
+    font-size: 14px;
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 600px) {
+  upload-choices, result-label, sp-widget {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .title {
@@ -20,10 +51,12 @@ body {
     margin-top: 1em;
     margin-bottom: 1em;
     color: #262626;
+	margin: auto;
+	text-align: center;
 }
 
 .content {
-    margin-top: 10em;
+    margin-top: 2em;
 }
 
 .analyze {
@@ -36,13 +69,15 @@ body {
 }
 
 .result-label {
-    margin-top: 0.5em;
-    padding: 10px;
+    float: left;
+    padding-left: 40px;
+	padding-top: 50px;
+	width:30%;
     font-size: 13px;
 }
 
 button.choose-file-button {
-  width: 200px;
+  width: 300px;
   height: 40px;
   border-radius: 2px;
   background-color: #ffffff;
@@ -52,7 +87,7 @@ button.choose-file-button {
 }
 
 button.analyze-button {
-    width: 200px;
+    width: 300px;
     height: 40px;
     border: solid 1px #7052CB;
     border-radius: 2px;

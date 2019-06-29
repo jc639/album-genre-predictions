@@ -9,7 +9,7 @@ import sys
 import spotipy
 import numpy as np
 import pandas as pd
-from spotipy import util
+from spotipy import oauth2
 from fastai.basic_train import load_learner
 from fastai.vision import open_image
 from pathlib import Path
@@ -20,10 +20,13 @@ scope = 'playlist-modify-public'
 user = 'mi676a246w6f8faqp86vemr64' 
 client_id = os.getenv('SPOTIPY_CLIENT_ID') # replace with your client id from Spotify Dev / or can set in environment
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')  # replace with your client secret from Spotify Dev / Or can set in environment
-redirect_uri='https://www.google.com/'
+redirect_uri = 'https://www.google.com/'
+cache_path = '/etc/secrets/.cache-mi676a246w6f8faqp86vemr64'
 
-token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
-client_secret = client_secret, redirect_uri = redirect_uri, cache_path='/etc/secrets/.cache-mi676a246w6f8faqp86vemr64')
+sp_oauth = oauth2.SpotifyOAuth(client_id=client_id, client_secret=client_secret,
+redirect_uri=redirect_uri, scope=scope, cache_path=cache_path)
+token_info = sp_oauth.get_cached_token()
+token = token_info['access_token']
 
 # export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
 classification_url = 'https://www.dropbox.com/s/ue1dacfhh28xavk/single_label_reduced.pkl?raw=1'
@@ -71,8 +74,10 @@ async def setup_learner(url, dest):
             raise
             
 def create_playlist(seed_genres=[], target_values={}):
-    token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
-            client_secret = client_secret, redirect_uri = redirect_uri, cache_path='/etc/secrets/.cache-mi676a246w6f8faqp86vemr64')
+    sp_oauth = oauth2.SpotifyOAuth(client_id=client_id, client_secret=client_secret,
+    redirect_uri=redirect_uri, scope=scope, cache_path=cache_path)
+    token_info = sp_oauth.get_cached_token()
+    token = token_info['access_token']
     
     sp = spotipy.Spotify(token)
     

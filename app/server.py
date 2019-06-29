@@ -115,13 +115,16 @@ def img_predict(img):
     target_vals['target_popularity'] = np.random.choice(np.arange(20, 101), size=1)[0]
     #print(target_vals)
     
-    seed_genre = [] if sum(probs > 0.1) >= 1 else genres.get(top_3[-1])
-    for i in range(len(probs)):
-        if probs[i].item() > 0.1:
-            seed_genre.extend(genres.get(top_3[i]))
-    seed_genre = list(set(seed_genre))
+    if probs[-1].item() >= 0.33:
+        seed_genres = genres.get(top_3[-1])
+    else:
+        seed_genre = [] if sum(probs > 0.1) >= 1 else genres.get(top_3[-1])
+        for i in range(len(probs)):
+            if probs[i].item() > 0.1:
+                seed_genre.extend(genres.get(top_3[i]))
+        seed_genre = list(set(seed_genre))
     
-    print(seed_genre)
+
     
     pl = create_playlist(seed_genres=seed_genre,
     target_values=target_vals)

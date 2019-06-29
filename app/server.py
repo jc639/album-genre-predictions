@@ -21,7 +21,7 @@ user = 'mi676a246w6f8faqp86vemr64'
 client_id = os.getenv('SPOTIPY_CLIENT_ID') # replace with your client id from Spotify Dev / or can set in environment
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')  # replace with your client secret from Spotify Dev / Or can set in environment
 redirect_uri = 'https://www.google.com/'
-cache_path = '/etc/secrets/.cache-mi676a246w6f8faqp86vemr64'
+cache_path = '.cache-mi676a246w6f8faqp86vemr64'
 
 sp_oauth = oauth2.SpotifyOAuth(client_id=client_id, client_secret=client_secret,
 redirect_uri=redirect_uri, scope=scope, cache_path=cache_path)

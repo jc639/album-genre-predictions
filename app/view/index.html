@@ -1,11 +1,13 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8'>
-    <link rel='stylesheet' href='../static/style.css'>
+	 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel='stylesheet' type="text/css" href='static/style.css'>
     <script src='../static/client.js'></script>
 </head>
 <body>
-<div class='title'>&#x1F3B7 Go from picture to Spotify Playlist! &#x1F3B8
+<div class='title'>&#x1F3B7 Go from picture to Spotify playlist! &#x1F3B8
 </div>
 <div class='blurb'>
 	<p><b>Got an image that you think would make a great album cover?<br>
@@ -13,11 +15,13 @@
 				and create a playlist of songs based on the image.</b>
 			</p>
 			<p>
-				Run out of inspiration? Have a look at <a href="https://www.reddit.com/r/fakealbumcovers" target='_blank'>r/fakealbumcovers</a> and upload
+				Run out of inspiration? Have a look at <a href="https://www.reddit.com/r/fakealbumcovers" target='_blank'>r/fakealbumcovers</a> and analyze
 				via the url.
 			</p>
 </div>
-<section>
+<div class='container'>
+<div class='row'>
+<div class='col-sm'>
 <div class='upload-choices'>
 	<form id='url-form'>
 		<button class='choose-file-button' type='button' onclick='urlPicker()'>Upload from URL</button><br>
@@ -45,12 +49,23 @@
 		</div>
 	</div>
 </div>
+</div>
+<div class='col-sm'>
 <div class='result-label'>
-	<label id='result-label'>RESULT LABEL</label>
+	<label id='result-label'>Genre predictions<br/>
+		will appear here!
+	</label>
 </div>
+</div>
+<div class='col-sm'>
 <div class='sp-widget'>
-	<iframe src="https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/7EpzM1aZziFxIjV8qwr2h6" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+	<iframe id="playlist" src="https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/7EpzM1aZziFxIjV8qwr2h6" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 </div>
-</section>
+</div>
+</div>
+</div>
+<div>
+<br>
+<br>
 </body>
 </html>

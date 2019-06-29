@@ -5,10 +5,15 @@ from starlette.middleware.cors import CORSMiddleware
 import uvicorn, aiohttp, asyncio
 from io import BytesIO
 import os
+import sys
 import spotipy
+import numpy as np
+import pandas as pd
 from spotipy import util
-from fastai import *
-from fastai.vision import *
+from fastai.basic_train import load_learner
+from fastai.vision import open_image
+from pathlib import Path
+import pickle
 
 # set up spotify
 scope = 'playlist-modify-public'
@@ -21,14 +26,20 @@ token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
 client_secret = client_secret, redirect_uri = redirect_uri)
 
 # export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
-classification_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
+classification_url = 'https://www.dropbox.com/s/ue1dacfhh28xavk/single_label_reduced.pkl?raw=1'
 classification_name = 'classification_model.pkl'
 
-regression_url = ''
+regression_url = 'https://www.dropbox.com/s/i0kh0skf06h4t6i/regression-reduced_output.pkl?raw=1'
 regression_name = 'regression_model.pkl'
 
-classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
+
+# load some genre and regression range values
+with open(path/'lookups/max_reg_vals.pkl', 'rb') as f:
+    max_vals = pickle.load(f)
+    max_vals = pd.Series(max_vals)
+with open(path/'lookups/genre_lookup.pkl', 'rb') as f:
+    genres = pickle.load(f)
 
 async def get_bytes(url):
     async with aiohttp.ClientSession() as session:
@@ -49,7 +60,7 @@ async def download_file(url, dest):
 async def setup_learner(url, dest):
     await download_file(url, path/dest)
     try:
-        learn = load_learner(path, export_file_name)
+        learn = load_learner(path, dest)
         return learn
     except RuntimeError as e:
         if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
@@ -58,7 +69,6 @@ async def setup_learner(url, dest):
             raise RuntimeError(message)
         else:
             raise
-# danceability 	energy 	key 	loudness 	mode 	speechiness 	acousticness 	instrumentalness 	liveness 	valence 	tempo 	duration_ms 	time_signature
             
 def create_playlist(seed_genres=[], target_values={}):
     token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
@@ -75,8 +85,47 @@ def create_playlist(seed_genres=[], target_values={}):
                                 tracks=track_uri)
                                 
     return "https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/{}".format(playlist['id'])
-    
 
+reg_cols = ['danceability', 'energy', 'loudness', 
+            'speechiness', 'acousticness', 'instrumentalness',
+           'liveness', 'valence', 'tempo']
+    
+def img_predict(img):
+    class_preds = class_model.predict(img)
+    top_3 = np.array(class_model.data.classes)[class_preds[2].argsort()][-3:]
+    probs = class_preds[2][class_preds[2].argsort()[-3:]]
+    reg_preds = reg_model.predict(img)
+    reg_preds = reg_preds[1]
+    
+    target_vals = {}
+    for i in range(len(reg_preds)):
+        target_attribute = reg_cols[i]
+        target_max = max_vals[target_attribute]
+        val = (reg_preds[i].item() / 100) * target_max
+        val = val if val < target_max else target_max
+        val = val if val > 0 else 0
+        if target_attribute == 'loudness':
+            val = -val
+        target_vals.update({f'target_{target_attribute}':val}) 
+    target_vals['target_popularity'] = np.random.choice(np.arange(20, 101), size=1)[0]
+    #print(target_vals)
+    
+    seed_genre = [] if sum(probs > 0.1) >= 1 else genres.get(top_3[-1])
+    for i in range(len(probs)):
+        if probs[i].item() > 0.1:
+            seed_genre.extend(genres.get(top_3[i]))
+    seed_genre = list(set(seed_genre))
+    
+    print(seed_genre)
+    
+    pl = create_playlist(seed_genres=seed_genre,
+    target_values=target_vals)
+
+    return JSONResponse({'genre_1': f'{top_3[-1]} ({probs[-1]:.2f})',
+    'genre_2': f'{top_3[-2]} ({probs[-2]:.2f})',
+    'genre_3': f'{top_3[-3]} ({probs[-3]:.2f})',
+    'playlist': pl})
+    
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner(classification_url, classification_name)), 
 asyncio.ensure_future(setup_learner(regression_url, regression_name))]
@@ -91,14 +140,18 @@ def index(request):
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
     data = await request.form()
-    if data['type'] == 'file':
-        img_bytes = await (data['file'].read())
-    if data['type'] == 'url':
-        img_bytes = get_bytes(data['file'])
+    img_bytes = await (data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    class_preds = class_model.predict(img)
-    reg_preds = reg_model.predict(img)
-    return JSONResponse({'': str(prediction)})
+    
+    return img_predict(img)
+        
+@app.route('/classify-url', methods=['GET'])
+async def classify_url(request):
+
+    img_bytes = await get_bytes(request.query_params['url'])
+    img = open_image(BytesIO(img_bytes))
+    return img_predict(img)
+    
 
 if __name__ == '__main__':
     if 'serve' in sys.argv: uvicorn.run(app=app, host='0.0.0.0', port=5042)

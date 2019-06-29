@@ -6,15 +6,6 @@ body {
     display: none;
 }
 
-.upload-choices {
-    float: left;
-    padding-left: 50px;
-	padding-top: 50px;
-	width:30%;
-    font-size: 14px;
-}
-
-
 .blurb{
     margin: auto;
     padding: 10px;
@@ -22,27 +13,28 @@ body {
     padding-right:10px;
     text-align: center;
     font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
 }
 
-.sp-widget {
-    float: left;
-	padding-left: 10px;
-    padding-top: 50px;
-	width:30%;
+.upload-choices {
     font-size: 14px;
 }
 
-/* Clear floats after the columns */
-section:after {
-  content: "";
-  display: table;
-  clear: both;
+.result-label {
+    font-size: 18px;
+	font-family: 'Open Sans', sans-serif;
 }
 
-@media (max-width: 600px) {
-  upload-choices, result-label, sp-widget {
+.sp-widget {
+    font-size: 14px;
+}
+
+
+@media screen and (max-width: 900px) {
+  .upload-choices, .result-label, .sp-widget {
     width: 100%;
     height: auto;
+	padding:0;
   }
 }
 
@@ -53,6 +45,7 @@ section:after {
     color: #262626;
 	margin: auto;
 	text-align: center;
+	font-family: 'Open Sans', sans-serif;
 }
 
 .content {
@@ -68,13 +61,6 @@ section:after {
     font-size: 12px;
 }
 
-.result-label {
-    float: left;
-    padding-left: 40px;
-	padding-top: 50px;
-	width:30%;
-    font-size: 13px;
-}
 
 button.choose-file-button {
   width: 300px;

@@ -22,16 +22,34 @@ function urlPicker() {
 		el('image-picked').height = '100';
 		el('image-picked').width = '100';
 		el('upload-label').innerHTML = '';
+		el('analyze-button').innerHTML = 'Analyzing...';
 	} else {
 		alert('Please select an image url')
 	}
+	var loc = window.location;
+	var xhr = new XMLHttpRequest();
+	var classify_url = `${loc.protocol}//${loc.hostname}:${loc.port}/classify-url?url=` + url;
+	xhr.open('GET', classify_url, true);
+    xhr.onerror = function() {alert (xhr.responseText);}
+    xhr.onload = function(e) {
+        if (this.readyState === 4) {
+            var response = JSON.parse(e.target.responseText);
+            el('result-label').innerHTML = `Genre #1 = ${response['genre_1']}<br/>
+            Genre #2 = ${response['genre_2']}<br/>
+            Genre #3 = ${response['genre_3']}`;
+            el('playlist').src = response.playlist
+        }
+        el('analyze-button').innerHTML = 'Analyze';
+    }
+	
+	xhr.send();
+	
 	
 }
 
 function analyze() {
     var uploadFiles = el('file-input').files;
-	var urlUpload = el('image-url').value;
-    if (uploadFiles.length == 0 && urlUpload.length == 0) alert('Please select 1 file to analyze!');
+    if (uploadFiles.length == 0) alert('Please select 1 file to analyze!');
 
     el('analyze-button').innerHTML = 'Analyzing...';
     var xhr = new XMLHttpRequest();
@@ -41,21 +59,16 @@ function analyze() {
     xhr.onload = function(e) {
         if (this.readyState === 4) {
             var response = JSON.parse(e.target.responseText);
-            el('result-label').innerHTML = `Result = ${response['result']}`;
+            el('result-label').innerHTML = `Genre #1 = ${response['genre_1']}<br/>
+            Genre #2 = ${response['genre_2']}<br/>
+            Genre #3 = ${response['genre_3']}`;
+            el('playlist').src = response.playlist
         }
         el('analyze-button').innerHTML = 'Analyze';
     }
 
     var fileData = new FormData();
-	if (uploadFiles.length == 1 && urlUpload.length == 0){
-		fileData.append('file', uploadFiles[0]);
-		fileData.append('type', 'file');
-	} else if (uploadFiles.length == 0 && urlUpload.length == 1){
-		fileData.append('file', urlUpload[0]);
-		fileData.append('type', 'url');
-	}
-	
-    ;
+	fileData.append('file', uploadFiles[0]);
     xhr.send(fileData);
 }
 

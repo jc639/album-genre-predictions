@@ -23,7 +23,7 @@ client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')  # replace with your client s
 redirect_uri='https://www.google.com/'
 
 token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
-client_secret = client_secret, redirect_uri = redirect_uri)
+client_secret = client_secret, redirect_uri = redirect_uri, cache_path='/etc/secrets/.cache-mi676a246w6f8faqp86vemr64')
 
 # export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
 classification_url = 'https://www.dropbox.com/s/ue1dacfhh28xavk/single_label_reduced.pkl?raw=1'
@@ -72,7 +72,7 @@ async def setup_learner(url, dest):
             
 def create_playlist(seed_genres=[], target_values={}):
     token = util.prompt_for_user_token(user, scope=scope, client_id = client_id,
-            client_secret = client_secret, redirect_uri = redirect_uri)
+            client_secret = client_secret, redirect_uri = redirect_uri, cache_path='/etc/secrets/.cache-mi676a246w6f8faqp86vemr64')
     
     sp = spotipy.Spotify(token)
     

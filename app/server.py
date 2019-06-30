@@ -118,7 +118,7 @@ def img_predict(img):
     #print(target_vals)
     
     if probs[-1].item() >= 0.33:
-        seed_genres = genres.get(top_3[-1])
+        seed_genre = genres.get(top_3[-1])
     else:
         seed_genre = [] if sum(probs > 0.1) >= 1 else genres.get(top_3[-1])
         for i in range(len(probs)):

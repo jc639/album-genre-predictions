@@ -117,7 +117,7 @@ def img_predict(img):
     target_vals['target_popularity'] = np.random.choice(np.arange(20, 101), size=1)[0]
     #print(target_vals)
     
-    if probs[-1].item() >= 0.33:
+    if probs[-1].item() >= 0.66:
         seed_genre = genres.get(top_3[-1])
     else:
         seed_genre = [] if sum(probs > 0.1) >= 1 else genres.get(top_3[-1])

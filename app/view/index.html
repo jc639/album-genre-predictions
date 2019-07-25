@@ -5,6 +5,12 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel='stylesheet' type="text/css" href='static/style.css'>
     <script src='../static/client.js'></script>
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.js"></script>
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	<link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.css"></link>
 </head>
 <body>
 <div class='title'>&#x1F3B7 Go from picture to Spotify playlist! &#x1F3B8
@@ -25,9 +31,8 @@
 <div class='upload-choices'>
 	<form id='url-form'>
 		<button class='choose-file-button' type='button' onclick='urlPicker()'>Upload from URL</button><br>
-		<br><input type="url" id="image-url" name="url" pattern="https?://.+" placeholder="https://www.reddit.com/r/fakealbumcovers" size="38"><br>
+		<br><input type="url" id="image-url" name="url" pattern="https?://.+" placeholder="https://www.reddit.com/r/fakealbumcovers" size="40"><br>
 	</form>
-
 	<div class='content'>
 		<div class='no-display'>
 			<input id='file-input'
@@ -48,18 +53,140 @@
 			<button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button>
 		</div>
 	</div>
+	<br>
 </div>
 </div>
 <div class='col-sm'>
 <div class='result-label'>
-	<label id='result-label'>Genre predictions<br/>
-		will appear here!
-	</label>
+	<div class="custom-control custom-checkbox">
+		<input type="checkbox" class="custom-control-input" id="genre1">
+		<label id="genre1-label" class="custom-control-label" for="genre1">Genre 1</label>
+	</div>
+	<div class="custom-control custom-checkbox">
+		<input type="checkbox" class="custom-control-input" id="genre2">
+		<label id="genre2-label" class="custom-control-label" for="genre2">Genre 2</label>
+	</div>
+	<div class="custom-control custom-checkbox" style="padding-bottom:21px;">	
+		<input type="checkbox" class="custom-control-input" id="genre3">
+		<label id="genre3-label" class="custom-control-label" for="genre3">Genre 3</label>
+	</div>
+	<div class='sliders'>
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="danceability-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="danceability-check">Danceability:</label>
+	</div>
+	</div>	
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="danceability">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="energy-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="energy-check">Energy:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="energy">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="loudness-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="loudness-check">Loudness:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="-60" max="0" step="0.01" id="loudness">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="speechiness-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="speechiness-check">Speechiness:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="speechiness">
+	</div>
 </div>
 </div>
 <div class='col-sm'>
+<div class='sliders'>
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="acousticness-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="acousticness-check">Acousticness:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="acousticness">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="instrumentalness-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="instrumentalness-check">Instrumentalness:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="instrumentalness">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="liveness-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="liveness-check">Liveness:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="liveness">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="valence-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="valence-check">Valence:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="0" max="1" step="0.01" id="valence">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="tempo-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="tempo-check">Tempo:</label>
+	</div>
+	</div>
+	<input type="range" class="custom-range" min="20" max="240" step="0.01" id="tempo">
+	
+	<div class="form-check form-check-inline">
+	<div class="col">
+	<input id="popularity-check" type="checkbox" checked=true data-toggle="toggle" data-size="mini" data-height="10" data-onstyle="success">
+	</div>
+	<div class="col">
+	<label class="form-check-label" for="popularity-check">Popularity:</label>
+	</div>
+	</div>
+	<input type="range" value="50" class="custom-range" min="0" max="100" step="1" id="popularity">
+</div>
+<br>
+</div>
+<div class='col-sm'>
+<div class='playlist' style="padding-bottom:5px;">
+	<button id='playlist-button' class='playlist-button' type='button' onclick='createPlaylist()'>Create Playlist</button>
+</div>
 <div class='sp-widget'>
-	<iframe id="playlist" src="https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/7EpzM1aZziFxIjV8qwr2h6" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+	<iframe id="playlist" src="https://open.spotify.com/embed/user/mi676a246w6f8faqp86vemr64/playlist/7EpzM1aZziFxIjV8qwr2h6" width="100%" height="290" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+</div>
+<div class='copy' style="padding-top:5px;">
+	<button id='copy-button' class='playlist-button' type='button' onclick='copyPlaylist()' onmouseout="outFunc()">
+		<span class="tooltiptext" id="myTooltip">Copy Playlist</span></button>
 </div>
 </div>
 </div>

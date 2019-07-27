@@ -20,6 +20,15 @@ import pickle
 scope = 'playlist-modify-public'
 user = 'mi676a246w6f8faqp86vemr64' 
 client_id = os.getenv('SPOTIPY_CLIENT_ID') # replace with your client id from Spotify Dev / or can set in environment
+if client_id is None:
+    print('client id is NONE!')
+else:
+    print(client_id)
+    
+if client_secret is None:
+    print('client secret is NONE!')
+else:
+    print(client_secret)
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')  # replace with your client secret from Spotify Dev / Or can set in environment
 redirect_uri = 'https://www.google.com/'
 shutil.copy('./etc/secrets/.cache-mi676a246w6f8faqp86vemr64', os.getcwd())

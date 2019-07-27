@@ -16,32 +16,24 @@ from fastai.vision import open_image
 from pathlib import Path
 import pickle
 
-
 # set up spotify
 scope = 'playlist-modify-public'
 user = 'mi676a246w6f8faqp86vemr64' 
 client_id = os.getenv('SPOTIPY_CLIENT_ID') # replace with your client id from Spotify Dev / or can set in environment
 client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')  # replace with your client secret from Spotify Dev / Or can set in environment
 redirect_uri = 'https://www.google.com/'
-# shutil.copy('/root/.cache-mi676a246w6f8faqp86vemr64', os.getcwd())
+shutil.copy('./etc/secrets/.cache-mi676a246w6f8faqp86vemr64', os.getcwd())
 cache_path = '.cache-mi676a246w6f8faqp86vemr64'
-
-for root, dirs, files in os.walk("."):
-    if '.cache-mi676a246w6f8faqp86vemr64' in files:
-        print(root)
-        print(dirs)
-        
-
+  
+# authentication
 sp_oauth = oauth2.SpotifyOAuth(client_id=client_id, client_secret=client_secret,
 redirect_uri=redirect_uri, scope=scope, cache_path=cache_path)
 token_info = sp_oauth.get_cached_token()
 token = token_info['access_token']
 
-
 # export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
 classification_url = 'https://www.dropbox.com/s/ue1dacfhh28xavk/single_label_reduced.pkl?raw=1'
 classification_name = 'classification_model.pkl'
-
 
 regression_url = 'https://www.dropbox.com/s/i0kh0skf06h4t6i/regression-reduced_output.pkl?raw=1'
 regression_name = 'regression_model.pkl'

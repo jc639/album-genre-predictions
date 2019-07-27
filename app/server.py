@@ -26,10 +26,11 @@ redirect_uri = 'https://www.google.com/'
 # shutil.copy('/root/.cache-mi676a246w6f8faqp86vemr64', os.getcwd())
 cache_path = '.cache-mi676a246w6f8faqp86vemr64'
 
-for d in os.listdir():
-    if os.path.isdir(d):
-        print(d)
-        print(os.listdir(d))
+for root, dirs, files in os.walk("."):
+    if '.cache-mi676a246w6f8faqp86vemr64' in files:
+        print(root)
+        print(dirs)
+        
 
 sp_oauth = oauth2.SpotifyOAuth(client_id=client_id, client_secret=client_secret,
 redirect_uri=redirect_uri, scope=scope, cache_path=cache_path)

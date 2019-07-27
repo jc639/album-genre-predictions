@@ -26,7 +26,7 @@ redirect_uri = 'https://www.google.com/'
 # shutil.copy('/root/.cache-mi676a246w6f8faqp86vemr64', os.getcwd())
 cache_path = '.cache-mi676a246w6f8faqp86vemr64'
 
-for d in os.listdir()
+for d in os.listdir():
     if os.path.isdir(d):
         print(d)
         print(os.listdir(d))
